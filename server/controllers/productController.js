@@ -37,6 +37,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     price,
     description,
     image,
+    model,
     brand,
     category,
     countInStock,
@@ -47,6 +48,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     name,
     price,
     image,
+    model,
     brand,
     category,
     countInStock,
@@ -65,6 +67,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
     price,
     description,
     image,
+    model,
     brand,
     category,
     countInStock,
@@ -77,6 +80,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
     product.price = price;
     product.description = description;
     product.image = image;
+    product.model = model;
     product.brand = brand;
     product.category = category;
     product.countInStock = countInStock;

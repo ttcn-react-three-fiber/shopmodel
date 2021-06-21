@@ -10,10 +10,10 @@ coverage
 /tmp
 # production
 /client/build
-uploads
+
 
 # misc
-.env
+
 .DS_Store
 .env.local
 .env.development.local

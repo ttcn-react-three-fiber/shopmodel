@@ -1,5 +1,5 @@
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import axios from "axios";
+import toast from "react-hot-toast";
 import {
   ORDER_CREATE_RESET,
   ORDER_DELIVERED_RESET,
@@ -47,12 +47,12 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_RESET,
   USER_UPDATE_SUCCESS,
-} from './types';
+} from "./types";
 
 // User Logout Action
 
-export const logout = () => dispatch => {
-  localStorage.removeItem('anafiya_userInfo');
+export const logout = () => (dispatch) => {
+  localStorage.removeItem("anafiya_userInfo");
   dispatch({ type: USER_PROFILE_DETAILS_RESET });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: USER_UPDATE_RESET });
@@ -70,13 +70,13 @@ export const logout = () => dispatch => {
 
 // User Login Action
 
-export const login = (email, password) => async dispatch => {
+export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
     const { data } = await axios.post(
@@ -85,8 +85,8 @@ export const login = (email, password) => async dispatch => {
       config
     );
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    toast.success('Logged in successfully');
-    localStorage.setItem('anafiya_userInfo', JSON.stringify(data));
+    toast.success("Logged in successfully");
+    localStorage.setItem("anafiya_userInfo", JSON.stringify(data));
   } catch (err) {
     const error =
       err.response && err.response.data.message
@@ -102,13 +102,13 @@ export const login = (email, password) => async dispatch => {
 
 // User Register Action
 
-export const register = userData => async dispatch => {
+export const register = (userData) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
     const { data } = await axios.post(
@@ -119,6 +119,7 @@ export const register = userData => async dispatch => {
     toast.success(data.message);
     // console.log(data);
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+    toast.success("Register successful");
   } catch (err) {
     const error =
       err.response && err.response.data.message
@@ -133,13 +134,13 @@ export const register = userData => async dispatch => {
 
 // User Register Activation Action
 
-export const userActivation = token => async dispatch => {
+export const userActivation = (token) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_ACTIVATION_REQUEST });
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
     const { data } = await axios.post(
@@ -150,9 +151,9 @@ export const userActivation = token => async dispatch => {
 
     dispatch({ type: USER_REGISTER_ACTIVATION_SUCCESS, payload: data });
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    toast.success('User activation successful');
+    toast.success("User activation successful");
 
-    localStorage.setItem('anafiya_userInfo', JSON.stringify(data));
+    localStorage.setItem("anafiya_userInfo", JSON.stringify(data));
   } catch (err) {
     const error =
       err.response && err.response.data.message
@@ -167,13 +168,13 @@ export const userActivation = token => async dispatch => {
 
 // Google Sign In Action
 
-export const googleSignIn = token => async dispatch => {
+export const googleSignIn = (token) => async (dispatch) => {
   try {
     dispatch({ type: USER_GOOGLE_LOGIN_REQUEST });
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
     const { data } = await axios.post(
@@ -184,9 +185,9 @@ export const googleSignIn = token => async dispatch => {
 
     dispatch({ type: USER_GOOGLE_LOGIN_SUCCESS, payload: data });
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    toast.success('Logged in with Google');
+    toast.success("Logged in with Google");
 
-    localStorage.setItem('anafiya_userInfo', JSON.stringify(data));
+    localStorage.setItem("anafiya_userInfo", JSON.stringify(data));
   } catch (err) {
     const error =
       err.response && err.response.data.message
@@ -201,13 +202,13 @@ export const googleSignIn = token => async dispatch => {
 
 // Facebook Sign In Action
 
-export const facebookSignIn = token => async dispatch => {
+export const facebookSignIn = (token) => async (dispatch) => {
   try {
     dispatch({ type: USER_FACEBOOK_LOGIN_REQUEST });
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
     const { data } = await axios.post(
@@ -218,9 +219,9 @@ export const facebookSignIn = token => async dispatch => {
 
     dispatch({ type: USER_FACEBOOK_LOGIN_SUCCESS, payload: data });
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    toast.success('Logged in with Facebook');
+    toast.success("Logged in with Facebook");
 
-    localStorage.setItem('anafiya_userInfo', JSON.stringify(data));
+    localStorage.setItem("anafiya_userInfo", JSON.stringify(data));
   } catch (err) {
     const error =
       err.response && err.response.data.message
@@ -235,7 +236,7 @@ export const facebookSignIn = token => async dispatch => {
 
 // User Profile Details Action
 
-export const getUserProfileDetails = id => async (dispatch, getState) => {
+export const getUserProfileDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_PROFILE_DETAILS_REQUEST });
 
@@ -243,7 +244,7 @@ export const getUserProfileDetails = id => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
       },
     };
@@ -254,7 +255,7 @@ export const getUserProfileDetails = id => async (dispatch, getState) => {
 
     dispatch({ type: USER_PROFILE_DETAILS_SUCCESS, payload: data });
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    localStorage.setItem('anafiya_userInfo', JSON.stringify(data));
+    localStorage.setItem("anafiya_userInfo", JSON.stringify(data));
   } catch (err) {
     const error =
       err.response && err.response.data.message
@@ -269,7 +270,7 @@ export const getUserProfileDetails = id => async (dispatch, getState) => {
 
 // User Details Action
 
-export const getUserDetails = id => async (dispatch, getState) => {
+export const getUserDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_DETAILS_REQUEST });
 
@@ -277,7 +278,7 @@ export const getUserDetails = id => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
       },
     };
@@ -301,7 +302,7 @@ export const getUserDetails = id => async (dispatch, getState) => {
 
 // User Profile Update Action
 
-export const userProfileUpdate = userData => async (dispatch, getState) => {
+export const userProfileUpdate = (userData) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_PROFILE_UPDATE_REQUEST });
 
@@ -309,7 +310,7 @@ export const userProfileUpdate = userData => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
       },
     };
@@ -321,10 +322,10 @@ export const userProfileUpdate = userData => async (dispatch, getState) => {
 
     dispatch({ type: USER_PROFILE_UPDATE_SUCCESS, payload: data });
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    toast.success('User updated successfully');
-    dispatch(getUserProfileDetails('profile'));
+    toast.success("User updated successfully");
+    dispatch(getUserProfileDetails("profile"));
 
-    localStorage.setItem('anafiya_userInfo', JSON.stringify(data));
+    localStorage.setItem("anafiya_userInfo", JSON.stringify(data));
   } catch (err) {
     const error =
       err.response && err.response.data.message
@@ -348,7 +349,7 @@ export const updateUser = (id, userData) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
       },
     };
@@ -360,10 +361,10 @@ export const updateUser = (id, userData) => async (dispatch, getState) => {
 
     dispatch({ type: USER_UPDATE_SUCCESS });
     if (user._id === id) {
-      dispatch(getUserProfileDetails('profile'));
+      dispatch(getUserProfileDetails("profile"));
     }
 
-    toast.success('User updated successfully');
+    toast.success("User updated successfully");
     dispatch(getUserDetails(id));
   } catch (err) {
     const error =
@@ -380,7 +381,7 @@ export const updateUser = (id, userData) => async (dispatch, getState) => {
 
 // User Delete Action
 
-export const userDelete = id => async (dispatch, getState) => {
+export const userDelete = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_DELETE_REQUEST });
 
@@ -398,7 +399,7 @@ export const userDelete = id => async (dispatch, getState) => {
     dispatch({ type: USER_DELETE_SUCCESS });
     dispatch(getUserList());
 
-    toast.success('User deleted successfully');
+    toast.success("User deleted successfully");
   } catch (err) {
     const error =
       err.response && err.response.data.message
@@ -422,7 +423,7 @@ export const getUserList = () => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
       },
     };

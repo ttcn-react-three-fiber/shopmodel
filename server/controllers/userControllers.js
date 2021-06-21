@@ -1,32 +1,49 @@
-import asyncHandler from 'express-async-handler';
-import jwt from 'jsonwebtoken';
-import { google } from 'googleapis';
-import fetch from 'node-fetch';
-import User from '../models/User.js';
+import asyncHandler from "express-async-handler";
+import jwt from "jsonwebtoken";
+import { google } from "googleapis";
+import fetch from "node-fetch";
+import User from "../models/User.js";
 import {
   createActivationToken,
   generateIdToken,
-} from '../utils/generateToken.js';
-import { sendActivationEmail } from '../utils/sendMail.js';
+} from "../utils/generateToken.js";
+import { sendActivationEmail } from "../utils/sendMail.js";
 
 const { OAuth2 } = google.auth;
 const client = new OAuth2(process.env.GOOGLE_CLIENT_ID);
 // Register New User
 
 export const register = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+  const { email, firstName, lastName, password } = req.body;
 
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
-    throw new Error('User already exists');
+    throw new Error("User already exists");
   }
-  const activationToken = createActivationToken(req.body);
-  const url = `${process.env.CLIENT_URI}/user/active/${activationToken}`;
+  // send email active
+  // const activationToken = createActivationToken(req.body);
+  // const url = `${process.env.CLIENT_URI}/user/active/${activationToken}`;
 
-  await sendActivationEmail(email, url);
+  // await sendActivationEmail(email, url);
 
-  res.json({ message: `Account activation email has sent to ${email}` });
+  // Creating new user
+  const user = await User.create({ firstName, lastName, email, password });
+
+  if (user) {
+    res.status(201).json({
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      avatar: user.avatar,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateIdToken(user._id),
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
 });
 
 // User Activation
@@ -41,7 +58,7 @@ export const activeUserAccount = asyncHandler(async (req, res) => {
 
   if (userExists) {
     res.status(400);
-    throw new Error('User already exists');
+    throw new Error("User already exists");
   }
 
   // Creating new user
@@ -59,7 +76,7 @@ export const activeUserAccount = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -81,7 +98,7 @@ export const login = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(401);
-    throw new Error('Invalid email or password');
+    throw new Error("Invalid email or password");
   }
 });
 
@@ -112,7 +129,7 @@ export const googleAuth = asyncHandler(async (req, res) => {
     } else {
       const lastName = verify.payload.family_name
         ? verify.payload.family_name
-        : '';
+        : "";
       const newUser = await User.create({
         firstName: given_name,
         lastName,
@@ -134,7 +151,7 @@ export const googleAuth = asyncHandler(async (req, res) => {
     }
   } else {
     res.status(400);
-    throw new Error('Google sign in failed');
+    throw new Error("Google sign in failed");
   }
 });
 
@@ -145,8 +162,8 @@ export const facebookAuth = asyncHandler(async (req, res) => {
   const URL = `https://graph.facebook.com/v2.9/${userID}/?fields=id,name,email,picture&access_token=${accessToken}`;
 
   const data = await fetch(URL)
-    .then(res => res.json())
-    .then(res => res);
+    .then((res) => res.json())
+    .then((res) => res);
 
   const { name, email, picture } = data;
 
@@ -156,7 +173,7 @@ export const facebookAuth = asyncHandler(async (req, res) => {
     return res.json({
       _id: user._id,
       firstName: user.firstName,
-      lastName: user?.lastName || '',
+      lastName: user?.lastName || "",
       avatar: user.avatar,
       email: user.email,
       isAdmin: user.isAdmin,
@@ -173,7 +190,7 @@ export const facebookAuth = asyncHandler(async (req, res) => {
       res.json({
         _id: newUser._id,
         firstName: newUser.firstName,
-        lastName: newUser?.lastName || '',
+        lastName: newUser?.lastName || "",
         avatar: newUser.avatar,
         email: newUser.email,
         isAdmin: newUser.isAdmin,
@@ -190,7 +207,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
     res.json({
       _id: user._id,
       firstName: user.firstName,
-      lastName: user.lastName || '',
+      lastName: user.lastName || "",
       avatar: user.avatar,
       email: user.email,
       isAdmin: user.isAdmin,
@@ -198,7 +215,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -209,7 +226,7 @@ export const getUserById = asyncHandler(async (req, res) => {
     res.json({
       _id: user._id,
       firstName: user.firstName,
-      lastName: user.lastName || '',
+      lastName: user.lastName || "",
       avatar: user.avatar,
       email: user.email,
       isAdmin: user.isAdmin,
@@ -218,18 +235,18 @@ export const getUserById = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
 export const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({}).select('-password');
+  const users = await User.find({}).select("-password");
 
   if (users) {
     res.json(users);
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -238,10 +255,10 @@ export const deleteUser = asyncHandler(async (req, res) => {
 
   if (user) {
     await user.remove();
-    res.json({ message: 'User removed' });
+    res.json({ message: "User removed" });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -260,7 +277,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
         user.password = req.body.newPassword;
       } else {
         res.status(400);
-        throw new Error('Current password is incorrect');
+        throw new Error("Current password is incorrect");
       }
     }
 
@@ -268,7 +285,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     res.json({
       _id: updateUser._id,
       firstName: updateUser.firstName,
-      lastName: updateUser.lastName || '',
+      lastName: updateUser.lastName || "",
       avatar: updateUser.avatar,
       email: updateUser.email,
       isAdmin: updateUser.isAdmin,
@@ -276,7 +293,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -288,23 +305,22 @@ export const updateUser = asyncHandler(async (req, res) => {
     user.lastName = req.body.lastName || user.lastName;
     user.avatar = req.body.avatar || user.avatar;
     user.isAdmin = req.body.isAdmin;
-    
+
     if (req.body.avatar) {
       user.avatar = req.body.avatar;
     }
-
 
     const updateUser = await user.save();
     res.json({
       _id: updateUser._id,
       firstName: updateUser.firstName,
-      lastName: updateUser?.lastName || '',
+      lastName: updateUser?.lastName || "",
       avatar: updateUser.avatar,
       email: updateUser.email,
       isAdmin: updateUser.isAdmin,
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
