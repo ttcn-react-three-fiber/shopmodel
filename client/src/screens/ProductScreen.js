@@ -10,6 +10,7 @@ import {
   createProductReview,
   getProductDetails,
 } from '../redux/actions/productActions';
+import {Helmet} from "react-helmet";
 
 const ProductScreen = () => {
   const params = useParams();
@@ -47,6 +48,7 @@ const ProductScreen = () => {
   return loading ? (
     <Loader />
   ) : (
+    
     <motion.div
       exit={{ opacity: 0 }}
       initial={{ opacity: 0 }}
@@ -57,7 +59,7 @@ const ProductScreen = () => {
       <Meta title={product?.name} />
       {reviewCreatedLoading && <Loader />}
       <div className='grid gap-14 md:grid-cols-2 pb-10'>
-        <motion.img
+        {/* <motion.img
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -65,7 +67,12 @@ const ProductScreen = () => {
           src={product?.image}
           alt=''
           className='mx-auto w-full max-w-md'
-        />
+        />  */}
+        <model-viewer  
+          className='mx-auto w-full max-w-md model h-12 w-12' 
+          src={product?.model}
+          alt="" ar ar-modes="webxr scene-viewer quick-look" environment-image="neutral" auto-rotate camera-controls>
+        </model-viewer>
         <motion.div
           className='mx-auto max-w-sm md:max-w-full'
           variants={{
@@ -88,7 +95,7 @@ const ProductScreen = () => {
           </span>
           <h2 className='text-4xl md:text-5xl text-gray-700 mt-5 mb-3'>
             {product?.name}
-          </h2>
+          </h2>gy
           <div className='divide-y-2 divide-gray-100'>
             <div className='flex items-center space-x-5'>
               <Rating value={product?.rating} />
@@ -223,6 +230,10 @@ const ProductScreen = () => {
           )}
         </div>
       </motion.div>
+      <Helmet>
+                <script type="module" src="/model-viewer.min.js"></script>
+                {/* <script>`try{Typekit.load({ async: true })}catch(e){}`</script> */}
+      </Helmet>
     </motion.div>
   );
 };

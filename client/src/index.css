@@ -262,3 +262,11 @@ label:not(.upload-btn) {
     height: 120px !important;
   }
 }
+
+#shadow-root :host {
+  display: block;
+  position: relative;
+  contain: strict;
+  width: 700px!important;
+  height: 300px !important;
+}

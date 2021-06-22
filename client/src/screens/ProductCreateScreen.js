@@ -127,50 +127,71 @@ const ProductCreateScreen = () => {
       <div className="max-w-lg">
         <form className="space-y-3" {...{ onSubmit }}>
           <div className="flex flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-5">
-            <div className="relative w-24 h-24 rounded-xl img-container overflow-hidden border-2 border-gray-200 border-dashed">
-              <div className="absolute top-0 left-0 w-full h-full img-overlay"></div>
-              <img
-                src={image}
-                alt=""
-                className="w-full h-full object-cover block"
-              />
+            <div className="flex-1">
               <label
-                htmlFor="upload-product"
-                className="flex justify-center w-full upload-btn text-white h-1/3 absolute -bottom-full left-1/2 transform -translate-x-1/2 bg-gray-900 bg-opacity-40 cursor-pointer transition-transform duration-300 text-sm"
-                style={{ color: "#fff !important" }}
+                htmlFor="name"
+                className="font-semibold text-gray-700 block pb-2"
               >
-                change
-                <input
-                  type="file"
-                  id="upload-product"
-                  name="product"
-                  className="opacity-0 cursor-pointer absolute top-0 left-0"
-                  onChange={handleProductImage}
-                />
+                Image Upload
               </label>
+              <div className="flex">
+                <div className="relative w-24 h-24 rounded-xl img-container overflow-hidden border-2 border-gray-200 border-dashed">
+                  <div className="absolute top-0 left-0 w-full h-full img-overlay"></div>
+                  <img
+                    src={image}
+                    alt=""
+                    className="w-full h-full object-cover block"
+                  />
+                  <label
+                    htmlFor="upload-product"
+                    className="flex justify-center w-full upload-btn text-white h-1/3 absolute -bottom-full left-1/2 transform -translate-x-1/2 bg-gray-900 bg-opacity-40 cursor-pointer transition-transform duration-300 text-sm"
+                    style={{ color: "#fff !important" }}
+                  >
+                    change
+                    <input
+                      type="file"
+                      id="upload-product"
+                      name="product"
+                      className="opacity-0 cursor-pointer absolute top-0 left-0"
+                      onChange={handleProductImage}
+                    />
+                  </label>
+                </div>
+              </div>
             </div>
-            <div className="relative w-24 h-24 rounded-xl img-container overflow-hidden border-2 border-gray-200 border-dashed">
-              <div className="absolute top-0 left-0 w-full h-full img-overlay"></div>
-              <img
-                src={image}
-                alt=""
-                className="w-full h-full object-cover block"
-              />
+            <div className="flex-1">
               <label
-                htmlFor="upload-model"
-                className="flex justify-center w-full upload-btn text-white h-1/3 absolute -bottom-full left-1/2 transform -translate-x-1/2 bg-gray-900 bg-opacity-40 cursor-pointer transition-transform duration-300 text-sm"
-                style={{ color: "#fff !important" }}
+                htmlFor="name"
+                className="font-semibold text-gray-700 block pb-2"
               >
-                Model
-                <input
-                  type="file"
-                  id="upload-model"
-                  name="model"
-                  className="opacity-0 cursor-pointer absolute top-0 left-0"
-                  onChange={handleProductModel}
-                />
+                Model Upload
               </label>
+              <div className="flex">
+                <div className="relative w-24 h-24 rounded-xl img-container overflow-hidden border-2 border-gray-200 border-dashed">
+                  <div className="absolute top-0 left-0 w-full h-full img-overlay"></div>
+                  <img
+                    src={image}
+                    alt=""
+                    className="w-full h-full object-cover block"
+                  />
+                  <label
+                    htmlFor="upload-model"
+                    className="flex justify-center w-full upload-btn text-white h-1/3 absolute -bottom-full left-1/2 transform -translate-x-1/2 bg-gray-900 bg-opacity-40 cursor-pointer transition-transform duration-300 text-sm"
+                    style={{ color: "#fff !important" }}
+                  >
+                    change
+                    <input
+                      type="file"
+                      id="upload-model"
+                      name="model"
+                      className="opacity-0 cursor-pointer absolute top-0 left-0"
+                      onChange={handleProductModel}
+                    />
+                  </label>
+                </div>
+              </div>
             </div>
+
             <div className="flex-1">
               <label
                 htmlFor="name"
