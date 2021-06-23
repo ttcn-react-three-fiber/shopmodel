@@ -270,3 +270,9 @@ label:not(.upload-btn) {
   width: 700px!important;
   height: 300px !important;
 }
+
+.card-model{
+  height: 200px;
+  max-height: 200px;
+  width: 300px;
+}

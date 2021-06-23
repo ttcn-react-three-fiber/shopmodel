@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 
 import { addToCart } from '../../redux/actions/cartActions';
 import Rating from '../Rating';
+import { Helmet } from "react-helmet";
 
 const ProductCard = ({ product, i }) => {
   const dispatch = useDispatch();
@@ -26,12 +27,15 @@ const ProductCard = ({ product, i }) => {
       animate='animate'
       className='flex flex-col justify-center mx-auto hover:shadow-xl border-2 border-dashed transition-shadow duration-500'
     >
-      <Link to={`/product/${product?._id}`} className='flex-1'>
-        <img
-          className='h-64 w-80 object-cover mx-auto'
-          src={product?.image}
-          alt=''
-        />
+      <Link to={`/product/${product?._id}`} className='flex-1 card-model'>
+      <model-viewer
+          className="mx-auto w-full max-w-md"
+          src={product?.model}
+          alt=""
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          environment-image="neutral"
+        ></model-viewer>
       </Link>
       <div className='px-5 py-3'>
         <div className='flex justify-between items-center'>
@@ -92,6 +96,10 @@ const ProductCard = ({ product, i }) => {
           </span>
         )}
       </div>
+      <Helmet>
+        <script type="module" src="/model-viewer.js"></script>
+        {/* <script>`try{Typekit.load({ async: true })}catch(e){}`</script> */}
+      </Helmet>
     </motion.div>
   );
 };
